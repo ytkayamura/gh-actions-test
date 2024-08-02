@@ -19,6 +19,8 @@ jobs:
         echo "Hello, World!"
         MERGE_COMMIT_SHA=$(git log --merges --pretty=format:"%H" -n 1)
         PARENT_COMMITS=$(git show -s --pretty=%P $MERGE_COMMIT_SHA)
+        PARENT1=$(echo $PARENT_COMMITS | awk '{print $1}')
         PARENT2=$(echo $PARENT_COMMITS | awk '{print $2}')
+        git branch --contains $PARENT1 | grep -v "HEAD" | head -n 1 | awk '{print $NF}'
         git branch --contains $PARENT2 | grep -v "HEAD" | head -n 1 | awk '{print $NF}'
 
