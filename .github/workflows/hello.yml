@@ -18,5 +18,6 @@ jobs:
       run: |
         echo "Hello, World!"
         merge_commit=$(git log --merges --pretty=format:"%H" -n 1)
+        echo "Merge commit: $merge_commit"
         git rev-list --parents $merge_commit
 
