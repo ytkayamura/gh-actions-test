@@ -14,15 +14,38 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Hello world action
+    - name: Hello world action and display merged branches
       run: |
         echo "Hello, World!"
-        MERGE_COMMIT_SHA=$(git log --merges --pretty=format:"%H" -n 1)
-        PARENT_COMMITS=$(git show -s --pretty=%P $MERGE_COMMIT_SHA)
-        PARENT1=$(echo $PARENT_COMMITS | awk '{print $1}')
-        PARENT2=$(echo $PARENT_COMMITS | awk '{print $2}')
-        git branch --contains $PARENT1
-        git branch --contains $PARENT2
-        git show -s --oneline $PARENT1
-        git show -s --oneline $PARENT2
+        
+        # 最新のマージコミットを取得
+        MERGE_COMMIT_SHA=$(git log --merges -n 1 --pretty=format:"%H")
+        
+        if [ -n "$MERGE_COMMIT_SHA" ]; then
+          echo "Latest merge commit: $MERGE_COMMIT_SHA"
+          
+          # マージコミットの親コミットを取得
+          PARENT_COMMITS=$(git show -s --pretty=%P $MERGE_COMMIT_SHA)
+          PARENT1=$(echo $PARENT_COMMITS | awk '{print $1}')
+          PARENT2=$(echo $PARENT_COMMITS | awk '{print $2}')
+          
+          echo "Parent 1: $PARENT1"
+          echo "Parent 2: $PARENT2"
+          
+          # 各親コミットが属するブランチを表示
+          echo "Branches containing Parent 1:"
+          git branch -r --contains $PARENT1
+          
+          echo "Branches containing Parent 2:"
+          git branch -r --contains $PARENT2
+          
+          # 各親コミットの情報を表示
+          echo "Parent 1 commit info:"
+          git show -s --oneline $PARENT1
+          
+          echo "Parent 2 commit info:"
+          git show -s --oneline $PARENT2
+        else
+          echo "No merge commit found in the recent history."
+        fi
 
