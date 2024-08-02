@@ -21,8 +21,8 @@ jobs:
         PARENT_COMMITS=$(git show -s --pretty=%P $MERGE_COMMIT_SHA)
         PARENT1=$(echo $PARENT_COMMITS | awk '{print $1}')
         PARENT2=$(echo $PARENT_COMMITS | awk '{print $2}')
-        git branch --contains $PARENT1 | grep -v "HEAD" | head -n 1 | awk '{print $NF}'
-        git branch --contains $PARENT2 | grep -v "HEAD" | head -n 1 | awk '{print $NF}'
+        git branch --contains $PARENT1
+        git branch --contains $PARENT2
         git show -s --oneline $PARENT1
         git show -s --oneline $PARENT2
 
