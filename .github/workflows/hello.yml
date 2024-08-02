@@ -17,7 +17,6 @@ jobs:
     - name: Hello world action
       run: |
         echo "Hello, World!"
-        merge_commit
         MERGE_COMMIT_SHA=$(git log --merges --pretty=format:"%H" -n 1)
         PARENT_COMMITS=$(git show -s --pretty=%P $MERGE_COMMIT_SHA)
         PARENT2=$(echo $PARENT_COMMITS | awk '{print $2}')
