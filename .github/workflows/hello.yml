@@ -17,5 +17,6 @@ jobs:
     - name: Hello world action
       run: |
         echo "Hello, World!"
-        git rev-list --parents merge_commit
+        merge_commit=$(git log --merges --pretty=format:"%H" -n 1)
+        git rev-list --parents $merge_commit
 
