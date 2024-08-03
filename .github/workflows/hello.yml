@@ -10,7 +10,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-      echo "Running main branch actions"
-      sleep 10
-      date
+
+      - name: Run main branch actions
+        run: |
+          echo "Running main branch actions"
+          sleep 10
+          date
 
