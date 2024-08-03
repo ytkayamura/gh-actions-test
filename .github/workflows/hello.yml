@@ -15,6 +15,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run push-triggered tasks
         run: |
+          current_branch=$(git branch --show-current)
+          echo "Running push-triggered tasks on $current_branch"
           date
           # Your push-triggered tasks here
 
