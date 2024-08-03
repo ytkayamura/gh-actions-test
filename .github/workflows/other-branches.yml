@@ -1,38 +1,23 @@
-name: Other Branches Workflow
-on:
-  workflow_run:
-    workflows: ["Main Branch Workflow"]
-    types:
-      - completed
-  pull_request:
-    types:
-      - closed
+name: Hoge Branch Action
+on: 
+  push:
+    branches:
+      - hoge
 
 jobs:
-  other-branches-job:
+  build:
     runs-on: ubuntu-latest
-    if: |
-      github.event_name == 'workflow_run' && 
-      github.event.workflow_run.conclusion == 'success' ||
-      (github.event_name == 'pull_request' && github.event.pull_request.merged == false)
-    
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      
-      - name: Run other branch actions
-        run: |
-          echo "Running other branch actions"
 
-  merged-notification:
-    runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
     steps:
-      - name: Get merged branch name
-        run: |
-          date
-          merged_branch="${{ github.event.pull_request.head.ref }}"
-          echo "Merged branch: $merged_branch"
+    - name: Hoge Branch - Build
+      run: |
+        echo "Running build on hoge branch"
+
+    - name: Dispatch custom event for main branch
+      if: success()
+      run: |
+        curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+        -H "Accept: application/vnd.github.v3+json" \
+        https://api.github.com/repos/${{ github.repository }}/dispatches \
+        -d '{"event_type":"main_branch_action_triggered", "client_payload": {"branch": "main"}}'
 

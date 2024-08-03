@@ -1,19 +1,13 @@
-name: Main Branch Workflow
+name: Main Branch Action
 on:
-  push:
-    branches:
-      - main
+  repository_dispatch:
+    types: [main_branch_action_triggered]
 
 jobs:
-  main-job:
+  build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Run main branch actions
-        run: |
-          echo "Running main branch actions"
-          sleep 10
-          date
-
+    - name: Main Branch - Awaited Build
+      run: |
+        echo "Running build on main branch after hoge branch completed"
