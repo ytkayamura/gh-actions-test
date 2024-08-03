@@ -49,13 +49,3 @@ jobs:
           echo "Merged branch: $MERGED_BRANCH"
         fi
 
-  merged-notification:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
-
-    steps:
-    - name: Get merged branch name
-      run: |
-        merged_branch="${{ github.event.pull_request.head.ref }}"
-        echo "Merged branch: $merged_branch"
-
