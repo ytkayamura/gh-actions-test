@@ -1,52 +1,16 @@
-name: Hello World GitHub Actions
+name: Main Branch Workflow
 on:
   push:
     branches:
       - main
-  pull_request:
-    types:
-      - closed
 
 jobs:
-  build:
+  main-job:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == false
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-
-    - name: Hello world action and display merged branches
-      run: |
-        current_branch=${GITHUB_REF#refs/heads/}
-        echo "Current branch: $current_branch"
-
-        LAST_COMMIT_SHA=$(git log -n 1 --pretty=format:"%H")
-        MERGE_COMMIT_SHA=$(git log --merges -n 1 --pretty=format:"%H")
-
-        if [[ $LAST_COMMIT_SHA == $MERGE_COMMIT_SHA ]]; then
-          PARENT_COMMITS=$(git show -s --pretty=%P $MERGE_COMMIT_SHA)
-          PARENT1=$(echo $PARENT_COMMITS | awk '{print $1}')
-          PARENT2=$(echo $PARENT_COMMITS | awk '{print $2}')
-
-          echo "p1: $(git show -s --oneline $PARENT1)"
-          echo "p2: $(git show -s --oneline $PARENT2)"
-          echo "Branch containing PARENT1:"
-          git branch -r --contains $PARENT1
-          echo "Branch containing PARENT2:"
-          git branch -r --contains $PARENT2
-          
-          PARENT2_BRANCHES=($(git branch -r --contains $PARENT2 | sed 's/origin\///'))
-          MERGED_BRANCH=""
-          for branch in "${PARENT2_BRANCHES[@]}"; do
-            if [[ $branch != $current_branch ]]; then
-              MERGED_BRANCH=$branch
-              break
-            fi
-          done
-          echo "Merged branch: $MERGED_BRANCH"
-        fi
-        date
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      echo "Running main branch actions"
+      sleep 10
+      date
 
