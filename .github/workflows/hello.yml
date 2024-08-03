@@ -1,13 +1,31 @@
-name: Main Branch Action
+name: Combined Workflow
+
 on:
-  repository_dispatch:
-    types: [main_branch_action_triggered]
+  push:
+    branches:
+      - main  # or your default branch name
+  pull_request:
+    types: [closed]
 
 jobs:
-  build:
+  push-job:
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
-
     steps:
-    - name: Main Branch - Awaited Build
-      run: |
-        echo "Running build on main branch after hoge branch completed"
+      - uses: actions/checkout@v2
+      - name: Run push-triggered tasks
+        run: |
+          date
+          # Your push-triggered tasks here
+
+  pr-close-job:
+    needs: push-job
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run PR close tasks
+        run: |
+          date
+          # Your PR close tasks here
+
