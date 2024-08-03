@@ -25,8 +25,12 @@ jobs:
         if [[ $LAST_COMMIT_SHA == $MERGE_COMMIT_SHA ]]; then
           # マージコミットの親コミットを取得
           PARENT_COMMITS=$(git show -s --pretty=%P $MERGE_COMMIT_SHA)
+          PARENT1=$(echo $PARENT_COMMITS | awk '{print $1}')
           PARENT2=$(echo $PARENT_COMMITS | awk '{print $2}')
 
+          echo "p1: `git show -s --oneline $PARENT1`"
+          echo "p2: `git show -s --oneline $PARENT2`"
+          git show -s --oneline $PARENT2
           echo git branch -r --contains $PARENT2
           git branch -r --contains $PARENT2
           PARENT2_BRANCHES=($(git branch -r --contains $PARENT2 | sed 's/origin\///'))
