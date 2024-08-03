@@ -1,7 +1,7 @@
 name: Other Branches Workflow
 on:
   workflow_run:
-    workflows: ["Hello World GitHub Actions"]
+    workflows: ["Main Branch Workflow"]
     types:
       - completed
   pull_request:
@@ -26,7 +26,6 @@ jobs:
         run: |
           echo "Running other branch actions"
 
-          # Your existing script here
   merged-notification:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
