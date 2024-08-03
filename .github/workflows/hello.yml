@@ -15,6 +15,7 @@ jobs:
         fetch-depth: 0
 
     - name: Hello world action and display merged branches
+      if: github.event.pull_request.merged == false
       run: |
         current_branch=${GITHUB_REF#refs/heads/}
         echo "Current branch: $current_branch"
@@ -45,3 +46,8 @@ jobs:
           echo "Merged branch: $MERGED_BRANCH"
         fi
 
+      - name: Get merged branch name
+        if: github.event.pull_request.merged == true
+        run: |
+          merged_branch="${{ github.event.pull_request.head.ref }}"
+          echo "Merged branch: $merged_branch"
