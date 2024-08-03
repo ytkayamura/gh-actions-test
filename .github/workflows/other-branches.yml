@@ -9,6 +9,24 @@ on:
       - closed
 
 jobs:
+  other-branches-job:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_run' && 
+      github.event.workflow_run.conclusion == 'success' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == false)
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      
+      - name: Run other branch actions
+        run: |
+          echo "Running other branch actions"
+
+          # Your existing script here
   merged-notification:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
