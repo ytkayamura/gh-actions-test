@@ -30,7 +30,8 @@ jobs:
 
           echo "p1: `git show -s --oneline $PARENT1`"
           echo "p2: `git show -s --oneline $PARENT2`"
-          git show -s --oneline $PARENT2
+          echo git branch -r --contains $PARENT1
+          git branch -r --contains $PARENT1
           echo git branch -r --contains $PARENT2
           git branch -r --contains $PARENT2
           PARENT2_BRANCHES=($(git branch -r --contains $PARENT2 | sed 's/origin\///'))
