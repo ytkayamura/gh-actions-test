@@ -1,0 +1,20 @@
+name: Other Branches Workflow
+on:
+  workflow_run:
+    workflows: ["Hello World GitHub Actions"]
+    types:
+      - completed
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  merged-notification:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.event.pull_request.merged == true
+    steps:
+      - name: Get merged branch name
+        run: |
+          merged_branch="${{ github.event.pull_request.head.ref }}"
+          echo "Merged branch: $merged_branch"
+
