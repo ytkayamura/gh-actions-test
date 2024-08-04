@@ -28,5 +28,6 @@ jobs:
     needs: wait-for-main
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Dependent job is running"
+      - run: echo "Dependent job is running. `date`"
+
 
