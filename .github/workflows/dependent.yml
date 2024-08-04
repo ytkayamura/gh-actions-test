@@ -8,6 +8,9 @@ jobs:
   wait-for-main:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
       - name: Wait for main workflow
         run: |
           while true; do
