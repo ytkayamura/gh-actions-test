@@ -1,0 +1,32 @@
+name: Dependent Workflow
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  wait-for-main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for main workflow
+        run: |
+          while true; do
+            status=$(gh run list --workflow=hello.yml --json conclusion -q '.[0].conclusion')
+            if [ "$status" = "success" ]; then
+              echo "Main workflow completed successfully"
+              break
+            elif [ "$status" = "failure" ]; then
+              echo "Main workflow failed"
+              exit 1
+            fi
+            sleep 60
+          done
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  dependent-job:
+    needs: wait-for-main
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Dependent job is running"
+
