@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main  # or your default branch name
-  pull_request:
-    types: [closed]
 
 jobs:
   push-job:
@@ -19,15 +17,4 @@ jobs:
           echo "Running push-triggered tasks on $current_branch"
           date
           # Your push-triggered tasks here
-
-  pr-close-job:
-    needs: push-job
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run PR close tasks
-        run: |
-          date
-          # Your PR close tasks here
 
